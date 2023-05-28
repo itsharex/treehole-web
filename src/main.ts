@@ -5,6 +5,7 @@ import router from './router'
 import axios from "axios";
 import {getToken} from "./utils/auth";
 import {createDiscreteApi} from "naive-ui";
+import i18n from './locale'
 
 axios.defaults.baseURL = 'http://localhost:5173/v1'
 
@@ -34,4 +35,7 @@ axios.interceptors.response.use((response) => {
     return Promise.reject(error);
 });
 
-createApp(App).use(router).mount('#app')
+const app = createApp(App)
+app.use(router)
+app.use(i18n)
+app.mount('#app')

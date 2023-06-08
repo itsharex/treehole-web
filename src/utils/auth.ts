@@ -1,5 +1,7 @@
 const TOKEN_KEY = 'token';
 
+const grKey = '6LcJjGAmAAAAAMQq9pMIo2SOePHOrm3T2LylipnT';
+
 const isLogin = () => {
     return !!localStorage.getItem(TOKEN_KEY);
 };
@@ -16,4 +18,4 @@ const clearToken = () => {
     localStorage.removeItem(TOKEN_KEY);
 };
 
-export {isLogin, getToken, setToken, clearToken};
+export {isLogin, getToken, setToken, clearToken, grKey};

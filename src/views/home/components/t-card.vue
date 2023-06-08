@@ -39,7 +39,7 @@ defineProps<{
   background-color: #ffffff;
   margin-bottom: 1rem;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 8px;
   max-height: 256px;
 }
 

@@ -29,7 +29,9 @@ export default defineConfig({
                 target: 'http://localhost:8088',
                 changeOrigin: true,
             }
-        }
+        },
+        host: 'localhost',
+        port: 3000,
     },
     resolve: {
         alias: {

@@ -15,13 +15,20 @@
       </n-button>
     </div>
     <t-card v-for="item in topic" :key="item.id" :data="item"/>
+    <n-button class="post" circle type="primary" @click="router.push('/topic/edit')">
+      <template #icon>
+        <n-icon size="32">
+          <CreateFilled/>
+        </n-icon>
+      </template>
+    </n-button>
   </div>
 </template>
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {getTopic} from "../../api/home";
-import {AccountCircleOutlined} from "@vicons/material";
+import {AccountCircleOutlined, CreateFilled} from "@vicons/material";
 import TCard from "./components/t-card.vue";
 import router from "../../router";
 
@@ -43,5 +50,15 @@ onMounted(() => {
 .view {
   display: flex;
   flex-direction: column;
+  height: 100%;
+//overflow: auto;
+}
+
+.post {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  width: 64px;
+  height: 64px;
 }
 </style>

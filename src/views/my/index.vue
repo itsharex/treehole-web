@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import {isLogin} from "../../utils/auth";
 import router from "../../router";
+import {useI18n} from "vue-i18n";
 
-onMounted(() => {
+const message = useMessage()
+const {t} = useI18n()
+
+onBeforeMount(() => {
   if (!isLogin()) {
+    message.info(t('login.first'))
     router.push('/login')
   }
 })
 </script>
 
 <template>
-  my
+  <div>
+my
+  </div>
 </template>
 
 <style scoped>

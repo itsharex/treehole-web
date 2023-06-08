@@ -7,7 +7,7 @@ import {getToken} from "./utils/auth";
 import {createDiscreteApi} from "naive-ui";
 import i18n from './locale'
 
-axios.defaults.baseURL = 'http://localhost:5173/v1'
+axios.defaults.baseURL = 'http://localhost:3000/v1'
 
 const {message, loadingBar} = createDiscreteApi(
     ['message', 'loadingBar']
@@ -27,10 +27,16 @@ axios.interceptors.request.use((config) => {
 })
 
 axios.interceptors.response.use((response) => {
+    const res = response.data;
+    if (res.code !== 0) {
+        message.error(res.message)
+        loadingBar.error()
+        return Promise.reject(res);
+    }
     loadingBar.finish()
-    return response.data;
+    return res;
 }, (error) => {
-    message.error("Server Error")
+    message.error(error.response.statusText)
     loadingBar.error()
     return Promise.reject(error);
 });

@@ -1,9 +1,16 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
   axios:
     specifier: ^1.4.0
     version: 1.4.0
+  crypto-js:
+    specifier: ^4.1.1
+    version: 4.1.1
   vue:
     specifier: ^3.3.4
     version: 3.3.4
@@ -15,6 +22,9 @@ dependencies:
     version: 4.2.1(vue@3.3.4)
 
 devDependencies:
+  '@types/crypto-js':
+    specifier: ^4.1.1
+    version: 4.1.1
   '@vicons/material':
     specifier: ^0.12.0
     version: 0.12.0
@@ -377,6 +387,10 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /@types/crypto-js@4.1.1:
+    resolution: {integrity: sha512-BG7fQKZ689HIoc5h+6D2Dgq1fABRa0RbBWKBd9SP/MVRVXROflpm5fhwyATX5duFmbStzyzyycPB8qUYKDH3NA==}
+    dev: true
+
   /@types/estree@1.0.1:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
     dev: true
@@ -606,6 +620,10 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
+    dev: false
+
+  /crypto-js@4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
     dev: false
 
   /css-render@0.15.12:

@@ -1,4 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
+import my from "../views/my/index.vue";
+import topicEdit from "../views/topic-edit/index.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -13,7 +15,15 @@ const router = createRouter({
         },
         {
             path: '/my',
-            component: () => import('../views/my/index.vue')
+            component: my
+        },
+        {
+            path: '/register',
+            component: () => import('../views/register/index.vue')
+        },
+        {
+            path: '/topic/edit',
+            component: topicEdit
         }
     ]
 })

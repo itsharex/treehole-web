@@ -3,5 +3,9 @@ export default {
         mail: 'Please enter your email',
         password: 'Please enter your password'
     },
-    login: 'Login',
+    login: {
+        login: 'Login',
+        success: 'Login success',
+    },
+    register: 'Register',
 }

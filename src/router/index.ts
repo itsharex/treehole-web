@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 import my from "../views/my/index.vue";
 import topicEdit from "../views/topic-edit/index.vue";
+import {isLogin} from "../utils/auth";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,6 +27,17 @@ const router = createRouter({
             component: topicEdit
         }
     ]
+})
+
+router.beforeEach(async (to, from) => {
+    if (to.path === '/topic/edit' && !isLogin()) {
+        return '/login'
+    }
+    return true
+})
+
+router.afterEach(async (to, from) => {
+    return true
 })
 
 export default router

@@ -39,6 +39,7 @@ onMounted(() => {
     topic.value = res.data
   })
 })
+
 </script>
 
 <style scoped>
@@ -60,5 +61,6 @@ onMounted(() => {
   bottom: 1rem;
   width: 64px;
   height: 64px;
+  opacity: 0.9;
 }
 </style>

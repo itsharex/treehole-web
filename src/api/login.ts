@@ -1,4 +1,5 @@
 import axios from "axios";
+import sha256 from "crypto-js/sha256";
 
 export interface RegisterData {
     email: string
@@ -7,6 +8,7 @@ export interface RegisterData {
 }
 
 export const register = (data: RegisterData) => {
+    data.password = sha256(data.password).toString()
     return axios.post('/register', data)
 }
 

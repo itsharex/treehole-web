@@ -33,6 +33,12 @@ router.beforeEach(async (to, from) => {
     if (to.path === '/topic/edit' && !isLogin()) {
         return '/login'
     }
+    // if (to.path === '/login' && isLogin()) {
+    //     return '/'
+    // }
+    // if (to.path === '/register' && isLogin()) {
+    //     return '/'
+    // }
     return true
 })
 

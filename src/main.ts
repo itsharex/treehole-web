@@ -7,7 +7,9 @@ import {getToken} from "./utils/auth";
 import {createDiscreteApi} from "naive-ui";
 import i18n from './locale'
 
-axios.defaults.baseURL = 'http://localhost:3000/v1'
+if (import.meta.env.VITE_API_BASE_URL) {
+    axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+}
 
 const {message, loadingBar} = createDiscreteApi(
     ['message', 'loadingBar']

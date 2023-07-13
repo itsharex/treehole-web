@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {register, RegisterData, sendGr, SendGrData} from "../../api/login";
+import {getCampusList, register, RegisterData, sendGr, SendGrData} from "../../api/login";
 import {grKey, setToken} from "../../utils/auth";
 import {useI18n} from "vue-i18n";
 import {onlyAllowNumber} from "../../utils/validate";
@@ -11,6 +11,8 @@ const message = useMessage()
 const {t} = useI18n()
 const disabled = ref(false)
 const grText = ref()
+const campusList = ref([])
+const campusListLoading = ref(false)
 
 onBeforeMount(() => {
   grText.value = t('input.getCode')
@@ -75,6 +77,20 @@ const handleReg = () => {
     router.replace('/')
   })
 }
+
+const handleSearch = (value: string) => {
+  value = value.trim()
+  if (!value) {
+    campusList.value = []
+    return
+  }
+  campusListLoading.value = true
+  getCampusList({name: value}).then(res => {
+    campusList.value = res.data.campus
+  }).finally(() => {
+    campusListLoading.value = false
+  })
+}
 </script>
 
 <template>
@@ -87,20 +103,23 @@ const handleReg = () => {
     <n-space vertical size="large">
       <form>
         <n-space vertical size="large">
-          <n-input round :placeholder="$t('input.mail')" v-model:value="formValue.email">
+          <n-input :placeholder="$t('input.mail')" v-model:value="formValue.email">
             <template #suffix>
               <n-button :disabled="disabled" text type="success" @click="handleGetCode">{{ grText }}</n-button>
             </template>
           </n-input>
-          <n-input round :placeholder="$t('input.captcha')" v-model:value="formValue.captcha"
+          <n-input :placeholder="$t('input.captcha')" v-model:value="formValue.captcha"
                    :allow-input="onlyAllowNumber"/>
           <!--suppress TypeScriptValidateTypes -->
-          <n-input round :placeholder="$t('input.password')" v-model:value="formValue.password" type="password"
+          <n-input :placeholder="$t('input.password')" v-model:value="formValue.password" type="password"
                    :input-props="{ autocomplete: 'off' }"/>
+          <n-select filterable clearable remote v-model:value="formValue.campusId" :placeholder="$t('input.campus')"
+                    :options="campusList" :loading="campusListLoading" @search="handleSearch" label-field="name"
+                    value-field="id"/>
         </n-space>
       </form>
       <n-space style="display: flex;flex-direction: row-reverse" size="small">
-        <n-button round style="min-width: 5rem" type="primary" @click="handleReg">{{ $t('register') }}</n-button>
+        <n-button style="min-width: 5rem" type="primary" @click="handleReg">{{ $t('register') }}</n-button>
       </n-space>
     </n-space>
   </div>

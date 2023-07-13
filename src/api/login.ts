@@ -1,10 +1,12 @@
 import axios from "axios";
 import sha256 from "crypto-js/sha256";
+import {axiosWithNoLoadingBar} from "./index";
 
 export interface RegisterData {
     email: string
     password: string
     captcha: string
+    campusId: number
 }
 
 export const register = (data: RegisterData) => {
@@ -28,4 +30,12 @@ export interface LoginData {
 
 export const login = (data: LoginData) => {
     return axios.post('/login', data)
+}
+
+export interface getCampusListData {
+    name: string
+}
+
+export const getCampusList = (data: getCampusListData) => {
+    return axiosWithNoLoadingBar.post<any>('/campus', data)
 }

@@ -20,6 +20,7 @@ declare module '@vue/runtime-core' {
     NInputGroup: typeof import('naive-ui')['NInputGroup']
     NLoadingBarProvider: typeof import('naive-ui')['NLoadingBarProvider']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
     NText: typeof import('naive-ui')['NText']
     RouterLink: typeof import('vue-router')['RouterLink']

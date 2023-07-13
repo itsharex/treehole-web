@@ -7,4 +7,5 @@ export default {
     'sendGr.success': '发送成功',
     'input.mailError': '邮箱格式不正确',
     'register.success': '注册成功',
+    'input.campus': '请输入学校',
 }

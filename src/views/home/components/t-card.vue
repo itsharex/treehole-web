@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {StarBorderFilled} from "@vicons/material";
-interface Topic {
-  id: number,
-  created_at: string,
-  content: string,
-}
+import {StarBorderFilled, VerifiedFilled} from "@vicons/material";
+import {Topic} from "../../../api/home";
+import dayjs from "dayjs";
 
 defineProps<{
   data: Topic
@@ -14,18 +11,24 @@ defineProps<{
 <template>
   <div class="card">
     <div class="top-bar">
-      <n-text type="success">
+      <n-text type="success" class="mr-8">
         <strong>
           T#{{ data.id }}
         </strong>
       </n-text>
-      <n-icon :color="'#ffb74d'" :size="24" style="margin-left: auto">
-        <StarBorderFilled />
+      <n-text type="success" class="mr-4">
+        {{ data.campus }}
+      </n-text>
+      <n-icon v-show="data.verified" :color="'#18a058'" size="18">
+        <VerifiedFilled/>
+      </n-icon>
+      <n-icon :color="'#ffb74d'" size="24" style="margin-left: auto">
+        <StarBorderFilled/>
       </n-icon>
     </div>
     <div>
       <n-text :depth="'3'" style="font-size: smaller">
-        {{ data.created_at }}
+        {{ dayjs(data.created_at).fromNow() }}
       </n-text>
     </div>
     <div class="text">{{ data.content }}</div>
@@ -50,8 +53,16 @@ defineProps<{
   overflow: hidden;
 }
 
-.top-bar{
+.top-bar {
   display: flex;
   align-items: center;
+}
+
+.mr-8 {
+  margin-right: 8px;
+}
+
+.mr-4 {
+  margin-right: 4px;
 }
 </style>

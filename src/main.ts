@@ -6,6 +6,11 @@ import axios from "axios";
 import {getToken} from "./utils/auth";
 import {createDiscreteApi} from "naive-ui";
 import i18n from './locale'
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/zh-cn";
+
+dayjs.extend(relativeTime).locale("zh-cn")
 
 if (import.meta.env.VITE_API_BASE_URL) {
     axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;

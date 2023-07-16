@@ -27,12 +27,12 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {getTopic} from "../../api/home";
+import {getTopic, TopicList} from "../../api/home";
 import {AccountCircleOutlined, CreateFilled} from "@vicons/material";
 import TCard from "./components/t-card.vue";
 import router from "../../router";
 
-const topic = ref([])
+const topic = ref<TopicList>()
 
 onMounted(() => {
   getTopic(10, 0).then(res => {

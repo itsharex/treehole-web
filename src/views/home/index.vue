@@ -39,7 +39,6 @@ onMounted(() => {
     topic.value = res.data
   })
 })
-
 </script>
 
 <style scoped>

@@ -5,7 +5,7 @@ export default {
     'input.getCode': '获取验证码',
     'input.email': '请输入邮箱',
     'sendGr.success': '发送成功',
-    'input.mailError': '邮箱格式不正确',
+    'input.mailErr': '邮箱格式不正确',
     'register.success': '注册成功',
     'input.campus': '请输入学校',
 }

@@ -17,3 +17,11 @@ axiosWithNoLoadingBar.interceptors.response.use((response) => {
     }
     return res;
 })
+
+export const recaptchaCfg = (token: string) => {
+    return {
+        headers: {
+            "Recaptcha": token
+        }
+    }
+}

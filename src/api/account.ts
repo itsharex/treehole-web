@@ -1,6 +1,7 @@
 import axios from "axios";
 import sha256 from "crypto-js/sha256";
-import {axiosWithNoLoadingBar} from "./index";
+import {axiosWithNoLoadingBar, recaptchaCfg} from "./index";
+import {gr} from "../utils/recaptcha";
 
 export interface RegisterData {
     email: string
@@ -15,12 +16,11 @@ export const register = (data: RegisterData) => {
 }
 
 export interface SendGrData {
-    token: string
     email: string
 }
 
-export const sendGr = (data: SendGrData) => {
-    return axios.post('/captcha', data)
+export const sendGr = async (data: SendGrData) => {
+    return axios.post('/captcha', data, recaptchaCfg(await gr))
 }
 
 export interface LoginData {

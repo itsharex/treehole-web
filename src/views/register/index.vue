@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {getCampusList, register, RegisterData, sendGr, SendGrData} from "../../api/login";
+import {getCampusList, register, RegisterData, sendGr, SendGrData} from "../../api/account";
 import {grKey, setToken} from "../../utils/auth";
 import {useI18n} from "vue-i18n";
 import {onlyAllowNumber} from "../../utils/validate";
@@ -19,29 +19,23 @@ onBeforeMount(() => {
 })
 
 const gr = (email: string) => {
-  (window as any).grecaptcha.ready(() => {
-    // noinspection TypeScriptValidateJSTypes
-    (window as any).grecaptcha.execute(grKey, {action: 'submit'}).then((token: string) => {
-      const data: SendGrData = {
-        email,
-        token
-      }
-      sendGr(data).then(() => {
-        message.success(t('sendGr.success'))
-        let time = 90
-        disabled.value = true
-        setInterval(() => {
-          if (time === 0) return
-          time--
-          grText.value = `${time}s`
-        }, 1000)
-        setTimeout(() => {
-          grText.value = t('input.getCode')
-          disabled.value = false
-        }, time * 1000)
-      })
-    });
-  });
+  const data: SendGrData = {
+    email,
+  }
+  sendGr(data).then(() => {
+    message.success(t('sendGr.success'))
+    let time = 90
+    disabled.value = true
+    setInterval(() => {
+      if (time === 0) return
+      time--
+      grText.value = `${time}s`
+    }, 1000)
+    setTimeout(() => {
+      grText.value = t('input.getCode')
+      disabled.value = false
+    }, time * 1000)
+  })
 }
 
 const handleGetCode = () => {

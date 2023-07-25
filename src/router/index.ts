@@ -11,7 +11,7 @@ const router = createRouter({
             component: () => import('../views/home/index.vue')
         },
         {
-            path: '/account',
+            path: '/login',
             component: () => import('../views/login/index.vue')
         },
         {
@@ -31,14 +31,28 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
     if (to.path === '/topic/edit' && !isLogin()) {
-        return '/account'
+        return '/login'
     }
-    // if (to.path === '/account' && isLogin()) {
+    // if (to.path === '/login' && isLogin()) {
     //     return '/'
     // }
     // if (to.path === '/register' && isLogin()) {
     //     return '/'
     // }
+    if (isLogin()) {
+        switch (to.path) {
+            case '/login':
+                case '/register':
+                return '/'
+        }
+    }
+    if (!isLogin()) {
+        switch (to.path) {
+            case '/my':
+            case '/topic/edit':
+                return '/login'
+        }
+    }
     return true
 })
 

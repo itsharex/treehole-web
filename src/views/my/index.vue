@@ -9,7 +9,7 @@ const {t} = useI18n()
 onBeforeMount(() => {
   if (!isLogin()) {
     message.info(t('login.first'))
-    router.push('/account')
+    router.push('/login')
   }
 })
 </script>

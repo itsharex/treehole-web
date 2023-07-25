@@ -43,6 +43,9 @@ axios.interceptors.response.use((response) => {
     loadingBar.finish()
     return res;
 }, (error) => {
+    if (error.response.status === 401) {
+        router.push('/login').then(r => r)
+    }
     message.error(error.response.statusText)
     loadingBar.error()
     return Promise.reject(error);

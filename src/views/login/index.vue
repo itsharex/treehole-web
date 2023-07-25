@@ -2,7 +2,7 @@
   <div>
     <n-h1 prefix="bar">
       <n-text type="success">
-        {{ $t('account.text') }}
+        {{ $t('login.text') }}
       </n-text>
     </n-h1>
     <n-space vertical size="large">
@@ -15,7 +15,7 @@
         </n-space>
       </form>
       <n-space style="display: flex;flex-direction: row-reverse" size="small">
-        <n-button type="primary" round style="min-width: 5rem" @click="handleLogin">{{ $t('account.text') }}</n-button>
+        <n-button type="primary" round style="min-width: 5rem" @click="handleLogin">{{ $t('login.text') }}</n-button>
         <n-button round style="min-width: 5rem" @click="router.push('/register')">{{ $t('register') }}</n-button>
       </n-space>
     </n-space>
@@ -47,7 +47,7 @@ const handleLogin = () => {
   }
   value.password = crypto.SHA256(value.password).toString()
   login(value).then(res => {
-    message.success(t('account.success'))
+    message.success(t('login.success'))
     setToken(res.data.token)
     router.go(-1)
   })

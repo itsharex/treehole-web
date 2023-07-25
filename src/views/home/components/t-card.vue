@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import {StarBorderFilled, VerifiedFilled} from "@vicons/material";
+import {StarBorderFilled, VerifiedFilled, StarFilled} from "@vicons/material";
 import {Topic} from "../../../api/home";
 import dayjs from "dayjs";
 
 defineProps<{
   data: Topic
 }>()
+
+defineEmits<{
+  (e: 'handleStar', id: number): void
+}>()
+
 </script>
 
 <template>
@@ -22,9 +27,13 @@ defineProps<{
       <n-icon v-show="data.verified" :color="'#18a058'" size="18">
         <VerifiedFilled/>
       </n-icon>
-      <n-icon :color="'#ffb74d'" size="24" style="margin-left: auto">
-        <StarBorderFilled/>
+      <n-icon @click.stop="$emit('handleStar',data.id)" :color="'#ffb74d'" size="22" style="margin-left: auto">
+        <StarFilled v-if="data.starred"/>
+        <StarBorderFilled v-else/>
       </n-icon>
+      <div style="color: #ffb74d">
+        {{ data.star_count }}
+      </div>
     </div>
     <div>
       <n-text :depth="'3'" style="font-size: smaller">
@@ -44,6 +53,8 @@ defineProps<{
   padding: 1rem;
   border-radius: 8px;
   max-height: 256px;
+  box-shadow: 2px 2px 80px rgba(0, 0, 0, 0.07);
+  transition: all 0.2s ease-in-out;
 }
 
 .text {
@@ -64,5 +75,15 @@ defineProps<{
 
 .mr-4 {
   margin-right: 4px;
+}
+
+.card:hover {
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.02),
+  2px 2px 5px rgba(0, 0, 0, 0.028),
+  4px 4px 10px rgba(0, 0, 0, 0.035),
+  7px 7px 18px rgba(0, 0, 0, 0.042),
+  13px 13px 33px rgba(0, 0, 0, 0.05),
+  30px 30px 80px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
 }
 </style>

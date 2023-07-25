@@ -1,3 +1,3 @@
 export default {
-    'login.first': 'Please account first',
+    'login.first': 'Please login first',
 }

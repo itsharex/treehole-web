@@ -6,6 +6,8 @@ export interface Topic {
     content: string,
     campus: string,
     verified?: boolean,
+    starred: boolean,
+    star_count?: number,
 }
 
 export type TopicList = Topic[];
@@ -20,4 +22,8 @@ export interface PostTopic {
 
 export const postTopic = (data: PostTopic) => {
     return axios.post('/topic', data);
+}
+
+export const PutStar = (id: number) => {
+    return axios.put('/topic/star/' + id);
 }

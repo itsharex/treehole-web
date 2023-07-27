@@ -2,6 +2,7 @@
 import {useI18n} from "vue-i18n";
 import {postTopic} from "../../api/home";
 import router from "../../router";
+import NavBar from "../../components/nav-bar.vue";
 
 const {t} = useI18n()
 const text = ref('')
@@ -25,13 +26,16 @@ const handleSubmit = () => {
 </script>
 
 <template>
-  <div style="display: flex;flex-direction: column;">
-    <n-input type="textarea" :placeholder="t('topic-edit.placeholder')" maxlength="255" show-count
-             :autosize="{minRows:5}" v-model:value="text" style="border-radius: 1rem">
-    </n-input>
-    <n-button round type="primary" @click="handleSubmit" style="align-self: end;margin-top: 1rem;min-width: 5rem">
-      {{ t('topic-edit.submit') }}
-    </n-button>
+  <div>
+    <nav-bar />
+    <div class="padding-1" style="display: flex;flex-direction: column;">
+      <n-input type="textarea" :placeholder="t('topic-edit.placeholder')" maxlength="255" show-count
+               :autosize="{minRows:5}" v-model:value="text" style="border-radius: 1rem">
+      </n-input>
+      <n-button round type="primary" @click="handleSubmit" style="align-self: end;margin-top: 1rem;min-width: 5rem">
+        {{ t('topic-edit.submit') }}
+      </n-button>
+    </div>
   </div>
 </template>
 

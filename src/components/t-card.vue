@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {StarBorderFilled, VerifiedFilled, StarFilled} from "@vicons/material";
-import {Topic} from "../../../api/home";
+import {Topic} from "../api/home";
 import dayjs from "dayjs";
 
 defineProps<{

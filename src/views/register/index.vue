@@ -4,6 +4,7 @@ import {grKey, setToken} from "../../utils/auth";
 import {useI18n} from "vue-i18n";
 import {onlyAllowNumber} from "../../utils/validate";
 import router from "../../router";
+import NavBar from "../../components/nav-bar.vue";
 
 const formValue = reactive<RegisterData>({} as RegisterData)
 const pattern = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/
@@ -89,33 +90,36 @@ const handleSearch = (value: string) => {
 
 <template>
   <div>
-    <n-h1 prefix="bar">
-      <n-text type="success">
-        {{ $t('register.text') }}
-      </n-text>
-    </n-h1>
-    <n-space vertical size="large">
-      <form>
-        <n-space vertical size="large">
-          <n-input :placeholder="$t('input.mail')" v-model:value="formValue.email">
-            <template #suffix>
-              <n-button :disabled="disabled" text type="success" @click="handleGetCode">{{ grText }}</n-button>
-            </template>
-          </n-input>
-          <n-input :placeholder="$t('input.captcha')" v-model:value="formValue.captcha"
-                   :allow-input="onlyAllowNumber"/>
-          <!--suppress TypeScriptValidateTypes -->
-          <n-input :placeholder="$t('input.password')" v-model:value="formValue.password" type="password"
-                   :input-props="{ autocomplete: 'off' }"/>
-          <n-select filterable clearable remote v-model:value="formValue.campusId" :placeholder="$t('input.campus')"
-                    :options="campusList" :loading="campusListLoading" @search="handleSearch" label-field="name"
-                    value-field="id"/>
+    <nav-bar />
+    <div class="padding-1">
+      <n-h1 prefix="bar">
+        <n-text type="success">
+          {{ $t('register.text') }}
+        </n-text>
+      </n-h1>
+      <n-space vertical size="large">
+        <form>
+          <n-space vertical size="large">
+            <n-input :placeholder="$t('input.mail')" v-model:value="formValue.email">
+              <template #suffix>
+                <n-button :disabled="disabled" text type="success" @click="handleGetCode">{{ grText }}</n-button>
+              </template>
+            </n-input>
+            <n-input :placeholder="$t('input.captcha')" v-model:value="formValue.captcha"
+                     :allow-input="onlyAllowNumber"/>
+            <!--suppress TypeScriptValidateTypes -->
+            <n-input :placeholder="$t('input.password')" v-model:value="formValue.password" type="password"
+                     :input-props="{ autocomplete: 'off' }"/>
+            <n-select filterable clearable remote v-model:value="formValue.campusId" :placeholder="$t('input.campus')"
+                      :options="campusList" :loading="campusListLoading" @search="handleSearch" label-field="name"
+                      value-field="id"/>
+          </n-space>
+        </form>
+        <n-space style="display: flex;flex-direction: row-reverse" size="small">
+          <n-button style="min-width: 5rem" type="primary" @click="handleReg">{{ $t('register') }}</n-button>
         </n-space>
-      </form>
-      <n-space style="display: flex;flex-direction: row-reverse" size="small">
-        <n-button style="min-width: 5rem" type="primary" @click="handleReg">{{ $t('register') }}</n-button>
       </n-space>
-    </n-space>
+    </div>
   </div>
 </template>
 

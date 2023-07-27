@@ -39,3 +39,12 @@ export interface getCampusListData {
 export const getCampusList = (data: getCampusListData) => {
     return axiosWithNoLoadingBar.post<any>('/campus', data)
 }
+
+export interface AccountInfo {
+    campus_name: string
+    verified?: boolean
+}
+
+export const getAccountInfo = () => {
+    return axios.get<AccountInfo>('/account')
+}

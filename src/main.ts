@@ -44,7 +44,12 @@ axios.interceptors.response.use((response) => {
     return res;
 }, (error) => {
     if (error.response.status === 401) {
-        router.push('/login').then(r => r)
+        router.push({
+            path: '/login',
+            query: {
+                redirect: router.currentRoute.value.path
+            }
+        }).then(r => r)
     }
     message.error(error.response.statusText)
     loadingBar.error()

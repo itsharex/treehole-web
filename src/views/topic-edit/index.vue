@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useI18n} from "vue-i18n";
-import {postTopic} from "../../api/home";
+import {postTopic} from "../../api/topic";
 import router from "../../router";
 import NavBar from "../../components/nav-bar.vue";
 
@@ -28,7 +28,7 @@ const handleSubmit = () => {
 <template>
   <div>
     <nav-bar />
-    <div class="padding-1" style="display: flex;flex-direction: column;">
+    <div class="padding-1 max-width-1280" style="display: flex;flex-direction: column;">
       <n-input type="textarea" :placeholder="t('topic-edit.placeholder')" maxlength="255" show-count
                :autosize="{minRows:5}" v-model:value="text" style="border-radius: 1rem">
       </n-input>

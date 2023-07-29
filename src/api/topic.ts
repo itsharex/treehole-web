@@ -27,3 +27,7 @@ export const postTopic = (data: PostTopic) => {
 export const PutStar = (id: number) => {
     return axios.put('/topic/star/' + id);
 }
+
+export const GetStarList = (limit: number, offset: number) => {
+    return axios.get<TopicList>('/topic/star/' + limit + '/' + offset);
+}

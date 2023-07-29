@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nav-bar />
-    <div class="padding-1">
+    <nav-bar/>
+    <div class="padding-1 max-width-1280">
       <n-h1 prefix="bar">
         <n-text type="success">
           {{ $t('login.text') }}
@@ -53,7 +53,13 @@ const handleLogin = () => {
   login(value).then(res => {
     message.success(t('login.success'))
     setToken(res.data.token)
-    router.go(-1)
+    const {redirect, ...othersQuery} = router.currentRoute.value.query
+    router.push({
+      path: (redirect as string) || '/',
+      query: {
+        ...othersQuery,
+      }
+    })
   })
 }
 </script>

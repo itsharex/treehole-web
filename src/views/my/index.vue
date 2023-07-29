@@ -3,26 +3,55 @@ import {useI18n} from "vue-i18n";
 import {AccountInfo, getAccountInfo} from "../../api/account";
 import {VerifiedFilled} from "@vicons/material";
 import NavBar from "../../components/nav-bar.vue";
+import {GetStarList, TopicList} from "../../api/topic";
+import TCard from "../../components/t-card.vue";
+import {useInfiniteScroll} from "@vueuse/core";
 
 const message = useMessage()
 const {t} = useI18n()
 
 const accountInfo = reactive({} as AccountInfo)
+const topic = ref<TopicList>()
+const scroll = ref<HTMLElement>()
+const canLoad = ref(false)
 
-onMounted(() => {
+onActivated(() => {
   getAccountInfo().then(res => {
     accountInfo.campus_name = res.data.campus_name
     accountInfo.verified = res.data?.verified
   })
+  GetStarList(10, 0).then(res => {
+    topic.value = res.data
+    if (res.data.length >= 10) {
+      canLoad.value = true
+    }
+  })
 })
+
+useInfiniteScroll(scroll,
+    () => {
+      if (canLoad.value) {
+        GetStarList(10, <number>topic.value?.length).then(res => {
+          if (res.data.length < 10) {
+            message.info(t('topic.noMore'))
+            canLoad.value = false
+          }
+          topic.value?.push(...res.data)
+        })
+      }
+    },
+    {
+      interval: 1000,
+    },
+)
 </script>
 
 <template>
-  <div>
-    <nav-bar />
-    <div class="view padding-1">
-      <div class="account" >
-        <n-text type="success" >
+  <div ref="scroll" style="height: 100vh;overflow-y: auto">
+    <nav-bar/>
+    <div class="view padding-1 max-width-1280">
+      <div class="account">
+        <n-text type="success">
           <strong>
             {{ accountInfo.campus_name }}
           </strong>
@@ -30,10 +59,10 @@ onMounted(() => {
         <n-icon v-if="accountInfo.verified" :color="'#18a058'" size="18">
           <VerifiedFilled/>
         </n-icon>
-        <n-button v-if="accountInfo.verified" round type="primary" disabled style="margin-left: auto" >
+        <n-button v-if="accountInfo.verified" round type="primary" disabled style="margin-left: auto">
           已认证
         </n-button>
-        <n-button v-else round type="primary" style="margin-left: auto" >
+        <n-button v-else round type="primary" style="margin-left: auto">
           去认证
         </n-button>
       </div>
@@ -42,7 +71,8 @@ onMounted(() => {
           Stars
         </n-text>
       </n-h2>
-      <div style="height: 2000px"></div>
+      <t-card v-for="item in topic" :key="item.id" :data="item"/>
+      <n-spin v-if="canLoad"></n-spin>
     </div>
   </div>
 </template>

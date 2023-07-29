@@ -1,20 +1,38 @@
 <script setup lang="ts">
 import {StarBorderFilled, VerifiedFilled, StarFilled} from "@vicons/material";
-import {Topic} from "../api/home";
+import {PutStar, Topic} from "../api/topic";
 import dayjs from "dayjs";
+import {useI18n} from "vue-i18n";
+import router from "../router";
 
-defineProps<{
+const props = defineProps<{
   data: Topic
 }>()
 
-defineEmits<{
-  (e: 'handleStar', id: number): void
-}>()
+const message = useMessage()
+const {t} = useI18n()
 
+const handleStar = (id: number) => {
+  PutStar(id).then(res => {
+    if (res.data === 20001) {
+      props.data.starred = true
+      props.data.star_count ? props.data.star_count++ : props.data.star_count = 1
+      message.success(t('star.success'))
+    } else if (res.data === 20002) {
+      props.data.starred = false
+      if (props.data.star_count) {
+        if (--props.data.star_count === 0) {
+          delete props.data.star_count
+        }
+      }
+      message.info(t('star.cancel'))
+    }
+  })
+}
 </script>
 
 <template>
-  <div class="card">
+  <div class="card" @click.stop="router.push('/topic/'+data.id)">
     <div class="top-bar">
       <n-text type="success" class="mr-8">
         <strong>
@@ -27,7 +45,7 @@ defineEmits<{
       <n-icon v-show="data.verified" :color="'#18a058'" size="18">
         <VerifiedFilled/>
       </n-icon>
-      <n-icon @click.stop="$emit('handleStar',data.id)" :color="'#ffb74d'" size="22" style="margin-left: auto">
+      <n-icon @click.stop="handleStar(data.id)" :color="'#ffb74d'" size="22" style="margin-left: auto">
         <StarFilled v-if="data.starred"/>
         <StarBorderFilled v-else/>
       </n-icon>

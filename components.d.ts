@@ -18,8 +18,10 @@ declare module 'vue' {
     NSpace: typeof import('naive-ui')['NSpace']
     NSpin: typeof import('naive-ui')['NSpin']
     NText: typeof import('naive-ui')['NText']
+    Pulldown: typeof import('./src/components/pulldown.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TCard: typeof import('./src/components/t-card.vue')['default']
+    TopicList: typeof import('./src/components/topic-list.vue')['default']
   }
 }

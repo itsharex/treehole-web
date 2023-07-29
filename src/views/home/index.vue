@@ -1,6 +1,6 @@
 <template>
   <div ref="scroll" style="height: 100vh;overflow-y: auto">
-    <div class="bar blur">
+    <div class="bar blur max-width-1280">
       <h3 style="margin-left: 1.5rem">
         <n-text type="success">
           TreeHole
@@ -14,8 +14,8 @@
         </template>
       </n-button>
     </div>
-    <div class="view padding-1">
-      <t-card @handleStar="handleStar" v-for="item in topic" :key="item.id" :data="item"/>
+    <div class="view padding-1 max-width-1280">
+      <t-card v-for="item in topic" :key="item.id" :data="item"/>
       <n-spin v-if="canLoad"></n-spin>
       <n-button class="post" circle type="primary" @click="router.push('/topic/edit')">
         <template #icon>
@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
-import {getTopic, PutStar, TopicList} from "../../api/home";
+import {getTopic, TopicList} from "../../api/topic";
 import {AccountCircleOutlined, CreateFilled} from "@vicons/material";
 import TCard from "../../components/t-card.vue";
 import router from "../../router";
@@ -47,7 +47,9 @@ let canLoad = ref(false)
 onMounted(() => {
   getTopic(10, 0).then(res => {
     topic.value = res.data
-    canLoad.value = true
+    if (res.data.length >= 10) {
+      canLoad.value = true
+    }
   })
 })
 
@@ -55,10 +57,9 @@ useInfiniteScroll(scroll,
     () => {
       if (canLoad.value) {
         getTopic(10, <number>topic.value?.length).then(res => {
-          if (!res.data) {
+          if (res.data.length < 10) {
             message.info(t('topic.noMore'))
             canLoad.value = false
-            return
           }
           topic.value?.push(...res.data)
         })
@@ -68,34 +69,6 @@ useInfiniteScroll(scroll,
       interval: 1000,
     },
 )
-
-const handleStar = (id: number) => {
-  PutStar(id).then(res => {
-    if (res.data === 20001) {
-      for (let item of topic.value as TopicList) {
-        if (item.id === id) {
-          item.starred = true
-          item.star_count ? item.star_count++ : item.star_count = 1
-          break
-        }
-      }
-      message.success(t('star.success'))
-    } else if (res.data === 20002) {
-      for (let item of topic.value as TopicList) {
-        if (item.id === id) {
-          item.starred = false
-          if (item.star_count) {
-            if (--item.star_count === 0) {
-              delete item.star_count
-            }
-          }
-          break
-        }
-      }
-      message.info(t('star.cancel'))
-    }
-  })
-}
 </script>
 
 <style scoped>

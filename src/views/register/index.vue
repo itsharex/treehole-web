@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {getCampusList, register, RegisterData, sendGr, SendGrData} from "../../api/account";
-import {grKey, setToken} from "../../utils/auth";
+import {setToken} from "../../utils/auth";
 import {useI18n} from "vue-i18n";
 import {onlyAllowNumber} from "../../utils/validate";
 import router from "../../router";
@@ -69,7 +69,13 @@ const handleReg = () => {
   register(value).then(res => {
     message.success(t('register.success'))
     setToken(res.data.token)
-    router.replace('/')
+    const {redirect, ...othersQuery} = router.currentRoute.value.query
+    router.push({
+      path: (redirect as string) || '/',
+      query: {
+        ...othersQuery,
+      }
+    })
   })
 }
 
@@ -90,8 +96,8 @@ const handleSearch = (value: string) => {
 
 <template>
   <div>
-    <nav-bar />
-    <div class="padding-1">
+    <nav-bar/>
+    <div class="padding-1 max-width-1280">
       <n-h1 prefix="bar">
         <n-text type="success">
           {{ $t('register.text') }}

@@ -4,7 +4,7 @@ import router from "../router";
 </script>
 
 <template>
-  <div class="bar blur">
+  <div class="bar blur max-width-1280">
     <n-button text @click="router.go(-1)" style="margin-left: 16px">
       <template #icon>
         <n-icon size="22">

@@ -4,12 +4,12 @@
 <template>
   <n-message-provider>
     <router-view v-slot="{ Component,route }">
-      <transition name="scale" mode="out-in">
-        <component v-if="route.meta.ignoreCache" :is="Component" :key="route.fullPath"/>
-        <keep-alive v-else>
-          <component :is="Component" :key="route.fullPath"/>
-        </keep-alive>
-      </transition>
+      <!--      <transition name="scale" mode="out-in">-->
+      <component v-if="route.meta.ignoreCache" :is="Component" :key="route.fullPath"/>
+      <keep-alive v-else>
+        <component :is="Component" :key="route.fullPath"/>
+      </keep-alive>
+      <!--      </transition>-->
     </router-view>
   </n-message-provider>
 </template>

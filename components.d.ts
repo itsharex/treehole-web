@@ -22,6 +22,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TCard: typeof import('./src/components/t-card.vue')['default']
+    TList: typeof import('./src/components/t-list.vue')['default']
     TopicList: typeof import('./src/components/topic-list.vue')['default']
   }
 }

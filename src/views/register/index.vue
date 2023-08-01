@@ -40,16 +40,15 @@ const gr = (email: string) => {
 }
 
 const handleGetCode = () => {
-  const email = formValue.email?.trim()
-  if (!email) {
+  if (!formValue.email) {
     message.error(t('input.mail'))
     return
   }
-  if (!pattern.test(email)) {
+  if (!pattern.test(formValue.email)) {
     message.error(t('input.mailErr'))
     return
   }
-  gr(email)
+  gr(formValue.email)
 }
 
 const handleReg = () => {
@@ -106,15 +105,15 @@ const handleSearch = (value: string) => {
       <n-space vertical size="large">
         <form>
           <n-space vertical size="large">
-            <n-input :placeholder="$t('input.mail')" v-model:value="formValue.email">
+            <n-input :placeholder="$t('input.mail')" v-model:value.trim="formValue.email">
               <template #suffix>
                 <n-button :disabled="disabled" text type="success" @click="handleGetCode">{{ grText }}</n-button>
               </template>
             </n-input>
-            <n-input :placeholder="$t('input.captcha')" v-model:value="formValue.captcha"
+            <n-input :placeholder="$t('input.captcha')" v-model:value.number.trim="formValue.captcha"
                      :allow-input="onlyAllowNumber"/>
             <!--suppress TypeScriptValidateTypes -->
-            <n-input :placeholder="$t('input.password')" v-model:value="formValue.password" type="password"
+            <n-input :placeholder="$t('input.password')" v-model:value.trim="formValue.password" type="password"
                      :input-props="{ autocomplete: 'off' }"/>
             <n-select filterable clearable remote v-model:value="formValue.campusId" :placeholder="$t('input.campus')"
                       :options="campusList" :loading="campusListLoading" @search="handleSearch" label-field="name"

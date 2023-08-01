@@ -10,7 +10,7 @@
       <n-space vertical size="large">
         <form>
           <n-space vertical size="large">
-            <n-input round :placeholder="$t('input.mail')" v-model:value="formValue.email"/>
+            <n-input round :placeholder="$t('input.mail')" v-model:value.trim="formValue.email"/>
             <!--suppress TypeScriptValidateTypes -->
             <n-input round :placeholder="$t('input.password')" v-model:value="formValue.password" type="password"
                      :input-props="{ autocomplete: 'on' }"/>
@@ -40,7 +40,6 @@ const {t} = useI18n()
 
 const handleLogin = () => {
   const value = Object.assign({}, formValue)
-  value.email = value.email?.trim()
   if (!value.email) {
     message.error(t('input.mail'))
     return

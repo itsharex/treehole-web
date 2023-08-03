@@ -4,6 +4,7 @@ import {PutStar, Topic} from "../api/topic";
 import dayjs from "dayjs";
 import {useI18n} from "vue-i18n";
 import router from "../router";
+import {useEventListener} from "@vueuse/core";
 
 const props = defineProps<{
   data: Topic
@@ -29,10 +30,18 @@ const handleStar = (id: number) => {
     }
   })
 }
+
+const el = ref<HTMLElement>()
+
+useEventListener(el, 'mousedown', (e: MouseEvent) => {
+  if (e.button === 2) {
+    console.log('right click')
+  }
+})
 </script>
 
 <template>
-  <div class="card" @click.stop="router.push('/topic/'+data.id)">
+  <div ref="el" class="card" @click.stop="router.push('/topic/'+data.id)">
     <div class="top-bar">
       <n-text type="success" class="mr-8">
         <strong>

@@ -5,16 +5,18 @@ import {VerifiedFilled} from "@vicons/material";
 import NavBar from "../../components/nav-bar.vue";
 import {GetStarList, TopicList} from "../../api/topic";
 import TList from "../../components/t-list.vue";
+import {useInfiniteScroll} from "@vueuse/core/index";
+import router from "../../router";
 
 const message = useMessage()
 const {t} = useI18n()
 
 const accountInfo = reactive({} as AccountInfo)
 const topic = ref<TopicList>([] as TopicList)
-const canLoad = ref(false)
 const isLoading = ref(false)
+let canLoad = false
 
-onActivated(() => {
+onMounted(() => {
   getAccountInfo().then(res => {
     accountInfo.campus_name = res.data.campus_name
     accountInfo.verified = res.data?.verified
@@ -22,9 +24,21 @@ onActivated(() => {
   GetStarList(10, 0).then(res => {
     topic.value = res.data
     if (res.data.length >= 10) {
-      canLoad.value = true
+      canLoad = true
     }
   })
+
+  useInfiniteScroll(document,
+      () => {
+        if (router.currentRoute.value.path === '/my')
+          if (canLoad) {
+            onLoadMore()
+          }
+      },
+      {
+        interval: 1000,
+      },
+  )
 })
 
 const onLoadMore = () => {
@@ -32,7 +46,7 @@ const onLoadMore = () => {
   GetStarList(10, <number>topic.value?.length).then(res => {
     if (res.data.length < 10) {
       message.info(t('topic.noMore'))
-      canLoad.value = false
+      canLoad = false
     }
     topic.value?.push(...res.data)
   }).finally(() => {
@@ -66,7 +80,7 @@ const onLoadMore = () => {
           Stars
         </n-text>
       </n-h2>
-      <t-list :is-loading="isLoading" :on-load-more="onLoadMore" :can-load="canLoad" :topic="topic as TopicList"/>
+      <t-list :is-loading="isLoading" :topic="topic as TopicList"/>
     </div>
   </div>
 </template>

@@ -63,7 +63,7 @@ export default defineConfig({
                 changeOrigin: true,
             }
         },
-        host: 'localhost',
+        host: true,
         port: 3000,
         https: false,
     },

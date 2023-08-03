@@ -17,9 +17,9 @@
       </div>
     </div>
     <div class="padding-1" style="display: flex;flex-direction: column">
-      <t-list :is-loading="isLoading" :can-load="canLoad" :topic="topic" :on-load-more="onLoadMore"
-              style="position: relative;top:72px"/>
-      <n-button class="post" circle type="primary" @click.stop="router.push('/topic/edit')">
+      <t-list in-refresh :refresh="getData" :is-loading="isLoading" :topic="topic"
+              style="position: relative;top:3rem"/>
+      <n-button v-show="topic.length" class="post" circle type="primary" @click.stop="router.push('/topic/edit')">
         <template #icon>
           <n-icon size="32">
             <CreateFilled/>
@@ -37,21 +37,37 @@ import {AccountCircleOutlined, CreateFilled} from "@vicons/material";
 import router from "../../router";
 import {useI18n} from "vue-i18n";
 import TList from "../../components/t-list.vue";
+import {useInfiniteScroll} from "@vueuse/core/index";
 
 const topic = ref<TopicList>([] as TopicList)
 
 const message = useMessage()
 const {t} = useI18n()
-const canLoad = ref(false)
 const isLoading = ref(false)
+let canLoad = false
 
-onMounted(() => {
+const getData = () => {
   getTopic(10, 0).then(res => {
     topic.value = res.data
     if (res.data.length >= 10) {
-      canLoad.value = true
+      canLoad = true
     }
   })
+}
+
+onMounted(() => {
+  getData()
+  useInfiniteScroll(document,
+      () => {
+        if (router.currentRoute.value.path === '/')
+          if (canLoad) {
+            onLoadMore()
+          }
+      },
+      {
+        interval: 1000,
+      },
+  )
 })
 
 const onLoadMore = () => {
@@ -59,7 +75,7 @@ const onLoadMore = () => {
   getTopic(10, <number>topic.value?.length).then(res => {
     if (res.data.length < 10) {
       message.info(t('topic.noMore'))
-      canLoad.value = false
+      canLoad = false
     }
     topic.value?.push(...res.data)
   }).finally(() => {

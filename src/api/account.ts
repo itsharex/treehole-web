@@ -20,7 +20,7 @@ export interface SendGrData {
 }
 
 export const sendGr = async (data: SendGrData) => {
-    return axios.post('/captcha', data, recaptchaCfg(await gr))
+    return axios.post('/captcha', data, recaptchaCfg(await gr()))
 }
 
 export interface LoginData {

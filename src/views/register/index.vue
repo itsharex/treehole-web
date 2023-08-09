@@ -15,8 +15,29 @@ const grText = ref()
 const campusList = ref([])
 const campusListLoading = ref(false)
 
-onBeforeMount(() => {
-  grText.value = t('input.getCode')
+const handleCountDown = (time: number) => {
+  disabled.value = true
+  setInterval(() => {
+    if (time === 0) return
+    time--
+    grText.value = `${time}s`
+  }, 1000)
+  setTimeout(() => {
+    grText.value = t('input.getCode')
+    disabled.value = false
+  }, time * 1000)
+}
+
+onMounted(() => {
+  const time = localStorage.getItem('grTime')
+  if (time) {
+    const now = new Date().getTime()
+    const diff = now - parseInt(time)
+    if (diff < 90 * 1000) {
+      let time = 90 - Math.floor(diff / 1000)
+      handleCountDown(time)
+    } else grText.value = t('input.getCode')
+  } else grText.value = t('input.getCode')
 })
 
 const gr = (email: string) => {
@@ -25,17 +46,9 @@ const gr = (email: string) => {
   }
   sendGr(data).then(() => {
     message.success(t('sendGr.success'))
+    localStorage.setItem('grTime', new Date().getTime().toString())
     let time = 90
-    disabled.value = true
-    setInterval(() => {
-      if (time === 0) return
-      time--
-      grText.value = `${time}s`
-    }, 1000)
-    setTimeout(() => {
-      grText.value = t('input.getCode')
-      disabled.value = false
-    }, time * 1000)
+    handleCountDown(time)
   })
 }
 

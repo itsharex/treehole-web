@@ -1,4 +1,6 @@
 import axios from "axios";
+import {recaptchaCfg} from "./index";
+import {gr} from "../utils/recaptcha";
 
 export interface Topic {
     id: number,
@@ -13,15 +15,15 @@ export interface Topic {
 export type TopicList = Topic[];
 
 export const getTopic = (limit: number, offset: number) => {
-    return axios.get<TopicList>('/topic/' + limit + '/' + offset);
+    return axios.get<TopicList>('/topics/' + limit + '/' + offset);
 }
 
 export interface PostTopic {
     content: string;
 }
 
-export const postTopic = (data: PostTopic) => {
-    return axios.post('/topic', data);
+export const postTopic = async (data: PostTopic) => {
+    return axios.post('/topic', data, recaptchaCfg(await gr()));
 }
 
 export const PutStar = (id: number) => {
@@ -30,4 +32,8 @@ export const PutStar = (id: number) => {
 
 export const GetStarList = (limit: number, offset: number) => {
     return axios.get<TopicList>('/topic/star/' + limit + '/' + offset);
+}
+
+export const GetOneTopic = (id: number) => {
+    return axios.get<Topic>('/topic/' + id);
 }

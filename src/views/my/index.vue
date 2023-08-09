@@ -16,30 +16,30 @@ const topic = ref<TopicList>([] as TopicList)
 const isLoading = ref(false)
 let canLoad = false
 
-onMounted(() => {
-  getAccountInfo().then(res => {
-    accountInfo.campus_name = res.data.campus_name
-    accountInfo.verified = res.data?.verified
-  })
-  GetStarList(10, 0).then(res => {
-    topic.value = res.data
-    if (res.data.length >= 10) {
-      canLoad = true
-    }
-  })
 
-  useInfiniteScroll(document,
-      () => {
-        if (router.currentRoute.value.path === '/my')
-          if (canLoad) {
-            onLoadMore()
-          }
-      },
-      {
-        interval: 1000,
-      },
-  )
+getAccountInfo().then(res => {
+  accountInfo.campus_name = res.data.campus_name
+  accountInfo.verified = res.data?.verified
 })
+GetStarList(10, 0).then(res => {
+  topic.value = res.data
+  if (res.data.length >= 10) {
+    canLoad = true
+  }
+})
+
+useInfiniteScroll(document,
+    () => {
+      if (router.currentRoute.value.path === '/my')
+        if (canLoad) {
+          onLoadMore()
+        }
+    },
+    {
+      interval: 1000,
+    },
+)
+
 
 const onLoadMore = () => {
   isLoading.value = true

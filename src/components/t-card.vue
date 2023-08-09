@@ -3,11 +3,11 @@ import {StarBorderFilled, VerifiedFilled, StarFilled} from "@vicons/material";
 import {PutStar, Topic} from "../api/topic";
 import dayjs from "dayjs";
 import {useI18n} from "vue-i18n";
-import router from "../router";
 import {useEventListener} from "@vueuse/core";
+import router from "../router";
 
 const props = defineProps<{
-  data: Topic
+  data: Topic,
 }>()
 
 const message = useMessage()
@@ -31,6 +31,19 @@ const handleStar = (id: number) => {
   })
 }
 
+const isDetail = computed(() => {
+  return router.currentRoute.value.path.indexOf('topic') !== -1
+})
+
+const handleClick = () => {
+  if (isDetail.value) {
+    return
+  }
+  router.push({
+    path: '/topic/' + props.data.id,
+  })
+}
+
 const el = ref<HTMLElement>()
 
 useEventListener(el, 'mousedown', (e: MouseEvent) => {
@@ -41,7 +54,7 @@ useEventListener(el, 'mousedown', (e: MouseEvent) => {
 </script>
 
 <template>
-  <div ref="el" class="card" @click.stop="router.push('/topic/'+data.id)">
+  <div ref="el" class="card" @click.stop="handleClick">
     <div class="top-bar">
       <n-text type="success" class="mr-8">
         <strong>
@@ -67,7 +80,7 @@ useEventListener(el, 'mousedown', (e: MouseEvent) => {
         {{ dayjs(data.created_at).fromNow() }}
       </n-text>
     </div>
-    <div class="text">{{ data.content }}</div>
+    <div class="text-detail">{{ data.content }}</div>
   </div>
 </template>
 
@@ -85,6 +98,13 @@ useEventListener(el, 'mousedown', (e: MouseEvent) => {
 }
 
 .text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 6;
+  overflow: hidden;
+}
+
+.text-detail {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 6;

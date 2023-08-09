@@ -4,21 +4,17 @@ import App from './App.vue'
 import router from './router'
 import axios from "axios";
 import {getToken} from "./utils/auth";
-import {createDiscreteApi} from "naive-ui";
 import i18n from './locale'
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
+import {message, loadingBar} from "./utils/discreteApi";
 
 dayjs.extend(relativeTime).locale("zh-cn")
 
 if (import.meta.env.VITE_API_BASE_URL) {
     axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 }
-
-const {message, loadingBar} = createDiscreteApi(
-    ['message', 'loadingBar']
-)
 
 axios.interceptors.request.use((config) => {
     loadingBar.start()

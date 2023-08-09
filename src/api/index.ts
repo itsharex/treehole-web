@@ -1,13 +1,9 @@
 import axios from "axios";
-import {createDiscreteApi} from "naive-ui";
+import {message} from "../utils/discreteApi";
 
 export const axiosWithNoLoadingBar = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
 })
-
-const {message, loadingBar} = createDiscreteApi(
-    ['message']
-)
 
 axiosWithNoLoadingBar.interceptors.response.use((response) => {
     const res = response.data;

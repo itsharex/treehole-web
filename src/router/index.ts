@@ -34,13 +34,6 @@ const router = createRouter({
             }
         },
         {
-            path: '/topic/edit',
-            component: topicEdit,
-            meta: {
-                requireAuth: true
-            }
-        },
-        {
             path: '/topic/:id',
             component: TopicDetail,
             meta: {
@@ -50,7 +43,7 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach(async (to, from) => {
+router.beforeEach((to, from) => {
     if (to.meta.requireAuth && !isLogin()) {
         return {
             path: '/login',
@@ -59,10 +52,6 @@ router.beforeEach(async (to, from) => {
             }
         }
     }
-    return true
-})
-
-router.afterEach(async () => {
     return true
 })
 

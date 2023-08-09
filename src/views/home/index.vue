@@ -2,7 +2,7 @@
   <div>
     <div class="bar blur">
       <div class="max-width-1280" style="display: flex;">
-        <h3 style="margin-left: 1.5rem">
+        <h3 @click.stop="router.push('/')" style="margin-left: 1.5rem;cursor: pointer">
           <n-text type="success">
             TreeHole
           </n-text>
@@ -19,31 +19,48 @@
     <div class="padding-1" style="display: flex;flex-direction: column">
       <t-list in-refresh :refresh="getData" :is-loading="isLoading" :topic="topic"
               style="position: relative;top:3rem"/>
-      <n-button v-show="topic.length" class="post" circle type="primary" @click.stop="router.push('/topic/edit')">
+      <n-button v-show="topic.length" class="post" circle type="primary" @click.stop="active = !active">
         <template #icon>
           <n-icon size="32">
             <CreateFilled/>
           </n-icon>
         </template>
       </n-button>
+      <n-drawer style="border-radius:1rem 1rem 0 0" v-model:show="active" :placement="placement" resizable
+                default-height="500">
+        <n-drawer-content class="max-width-1280" :title="t('topic-edit.title')" closable>
+          <n-input type="textarea" :placeholder="t('topic-edit.placeholder')" maxlength="2048" show-count
+                   :autosize="{minRows:10}" v-model:value="text" style="border-radius: 1rem">
+          </n-input>
+          <template #footer>
+            <n-button round type="primary" @click="handleSubmit" style="min-width: 5rem">
+              {{ t('topic-edit.submit') }}
+            </n-button>
+          </template>
+        </n-drawer-content>
+      </n-drawer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
-import {getTopic, TopicList} from "../../api/topic";
+import {ref} from "vue";
+import {getTopic, postTopic, TopicList} from "../../api/topic";
 import {AccountCircleOutlined, CreateFilled} from "@vicons/material";
 import router from "../../router";
 import {useI18n} from "vue-i18n";
 import TList from "../../components/t-list.vue";
 import {useInfiniteScroll} from "@vueuse/core/index";
+import type {DrawerPlacement} from "naive-ui";
 
 const topic = ref<TopicList>([] as TopicList)
 
 const message = useMessage()
 const {t} = useI18n()
 const isLoading = ref(false)
+const active = ref(false)
+const text = ref()
+const placement = ref<DrawerPlacement>('bottom')
 let canLoad = false
 
 const getData = () => {
@@ -55,20 +72,20 @@ const getData = () => {
   })
 }
 
-onMounted(() => {
-  getData()
-  useInfiniteScroll(document,
-      () => {
-        if (router.currentRoute.value.path === '/')
-          if (canLoad) {
-            onLoadMore()
-          }
-      },
-      {
-        interval: 1000,
-      },
-  )
-})
+
+getData()
+useInfiniteScroll(document,
+    () => {
+      if (router.currentRoute.value.path === '/')
+        if (canLoad) {
+          onLoadMore()
+        }
+    },
+    {
+      interval: 1000,
+    },
+)
+
 
 const onLoadMore = () => {
   isLoading.value = true
@@ -80,6 +97,24 @@ const onLoadMore = () => {
     topic.value?.push(...res.data)
   }).finally(() => {
     isLoading.value = false
+  })
+}
+
+const handleSubmit = () => {
+  const value = text.value.trim()
+  if (!value) {
+    message.error(t('topic-edit.input'))
+    return
+  }
+  if (value.length > 2048) {
+    message.error(t('topic-edit.limit'))
+    return
+  }
+  postTopic({content: value}).then(() => {
+    text.value = ''
+    active.value = false
+    getData()
+    message.success(t('topic-edit.success'))
   })
 }
 </script>

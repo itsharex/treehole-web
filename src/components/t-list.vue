@@ -23,7 +23,7 @@ defineProps({
 
 <template>
   <div class="max-width-1280 view">
-    <PullDown v-if="inRefresh" @refresh="refresh as Function"/>
+    <PullDown v-if="inRefresh && topic.length" @refresh="refresh as Function"/>
     <t-card v-for="item in topic" :key="item.id" :data="item"/>
     <n-spin v-show="isLoading" style="height: 72px;"></n-spin>
   </div>

@@ -8,4 +8,5 @@ export default {
     'topic-edit.limit': '超出字数限制',
     'topic-edit.success': '发布成功',
     'topic-edit.title': '扔树洞',
+    'developing': '开发中...',
 }

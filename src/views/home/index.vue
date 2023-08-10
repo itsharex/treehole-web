@@ -16,9 +16,11 @@
         </n-button>
       </div>
     </div>
+    <n-empty v-if="!topic.length" size="huge" :description="t('developing')" style="position: relative;top: 45vh">
+
+    </n-empty>
     <div class="padding-1" style="display: flex;flex-direction: column">
-      <t-list in-refresh :refresh="getData" :is-loading="isLoading" :topic="topic"
-              style="position: relative;top:3rem"/>
+      <t-list class="relative-top-3" in-refresh :refresh="getData" :is-loading="isLoading" :topic="topic"/>
       <n-button v-show="topic.length" class="post" circle type="primary" @click.stop="active = !active">
         <template #icon>
           <n-icon size="32">
@@ -132,5 +134,10 @@ const handleSubmit = () => {
   width: 64px;
   height: 64px;
   box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+.relative-top-3 {
+  position: relative;
+  top: 3rem
 }
 </style>

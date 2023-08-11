@@ -54,9 +54,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Display structure of files
-        run: ls -R
-
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -69,4 +66,3 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: open-hole/open-hole.github.io
           publish_dir: ./dist
-          publish_branch: main

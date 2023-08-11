@@ -66,3 +66,4 @@ jobs:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository: open-hole/open-hole.github.io
           publish_dir: ./dist
+          publish_branch: main
